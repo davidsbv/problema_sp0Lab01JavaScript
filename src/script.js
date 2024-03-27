@@ -71,6 +71,7 @@ function refreshTasks(){
        
         li.setAttribute('id', i);
         trashIcon.setAttribute('id', i);
+        input.setAttribute('id', i)
         input.setAttribute('type', 'checkbox'); 
         input.classList.add('task-checkbox');
         span.classList.add('task-text');
@@ -84,15 +85,20 @@ function refreshTasks(){
         taskList.appendChild(li); 
 
         console.log(input)
-        input.addEventListener('click', () => {
+        
+        input.addEventListener('click', (event) => {
+            const target = event.target;
             if (input.checked) {
                 span.style.color = 'red'
                 span.style.textDecoration = 'line-through';
+                taskArray[target.id].done = true;
             } else {
                 span.style.color = 'black'
                 span.style.textDecoration = 'none';
+                taskArray[target.id].done = false;
             }
-        } );
+            console.log(taskArray[i])
+        });
 
         trashIcon.addEventListener('click', removeTask);
 
