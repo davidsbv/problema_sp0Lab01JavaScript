@@ -3,8 +3,6 @@ let taskArray = [];
 
 // Variable para contabilizar el número de tareas
 let idTask = 0;
-console.log(idTask)
-let ultimaPosicion;
 //  Función constructora Obeto tarea
 function task(name){
     this.id = idTask++;
@@ -44,18 +42,12 @@ function fieldEmpty(){
 // Crear tarea
 function makeTask(nameTask){
     const tarea = new task(nameTask);
+    console.log('id arrayTareas' + tarea.id )
     return tarea;
 }
 
 // Función para colocar las tareas en el documento
-function addTask(){
-
-
-   //removeAll();
-   
-    
-    //taskArray.forEach(element => {
-
+function addTask(idTarea){
 
     // Etiqueta li
     const li = document.createElement('li');
@@ -73,30 +65,30 @@ function addTask(){
     // Icono cubo basura
     const trashIcon = document.createElement('i');
 
+    let index = taskArray.at(-1);
 
 
-  
-    
-
-    li.setAttribute('id', i);
-    trashIcon.setAttribute('id', i);
-    input.setAttribute('id', i)
+    // li.setAttribute('id', index.id);
+    // trashIcon.setAttribute('id', index.id);
+    // Agrego id de tarea para poder trabajar conjuntamente el input check con su tarea.done correspondiente
+    input.setAttribute('id', idTarea)
     input.setAttribute('type', 'checkbox'); 
     input.classList.add('task-checkbox');
     span.classList.add('task-text');
     trashIcon.setAttribute('class', 'fa fa-trash');
-    //console.log(span.value = taskArray[i].name);
-    span.value = taskArray[i].name;
+    span.value = index.name;
+    console.log('span.value '+span.value)
     span.textContent = span.value;
     li.appendChild(article).appendChild(input);
     li.appendChild(article).appendChild(span);
     li.appendChild(trashIcon);
     taskList.appendChild(li); 
 
-    refreshTaskLenght();
-    
+  
+    console.log('idTarea ' +idTarea);
     input.addEventListener('click', (event) => {
         const target = event.target;
+        
         if (input.checked) {
             span.style.color = 'red'
             span.style.textDecoration = 'line-through';
@@ -107,7 +99,10 @@ function addTask(){
             span.style.textDecoration = 'none';
             taskArray[target.id].done = false;
         }
-        console.log(taskArray[i])
+        console.log( target)
+        console.log('target.id '+target.id)
+        console.log('indice utlimo ' + index.id)
+        console.log('taskArray ' + taskArray[index.id].id)
     });
 
     trashIcon.addEventListener('click', removeTask);
@@ -132,8 +127,9 @@ addButton.addEventListener('click', () => {
     if (fieldEmpty()) {
         alert('Por favor, pon nombre a la tarea');
     } else {
-        taskArray.push(makeTask(taskName.value));
-        addTask();
+        let tarea = makeTask(taskName.value);
+        taskArray.push(tarea);
+        addTask(tarea.id);
         //addTaskNumber();
         cleanNameOfTask();  
         console.log('añadiendo')
@@ -153,8 +149,8 @@ function removeTask(event){
     console.log('trasId' + trashId.id)
     if (taskList.hasChildNodes()) {
         taskArray.splice(trashId.id)
-        taskList.removeChild(taskList.children[trashId.id])
-       
+        //taskList.removeChild(taskList.children[trashId.id])
+        taskList.removeChild(trashId)
         refreshTaskLenght();
         //addTask();
     } 
@@ -182,3 +178,15 @@ function removeAll() {
   function refreshTaskLenght() {
     idTask = (taskArray.length);
   }
+
+//   function duplicatedTasdk(newTask) {
+    
+//     taskArray.forEach(element) =>{
+//         if () {
+            
+//         } else {
+            
+//         }
+//     }
+
+//   }
