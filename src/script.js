@@ -67,7 +67,7 @@ function addTask(idTarea){
     // tarea guarda la tarea coincidente con el índice de tarea que pasa como argumento el la función
     const tarea = taskArray.find((indice) => (indice.id == idTarea));
 
-    // Agrego id de tarea para poder trabajar conjuntamente el input check, li e icono de la baura con su tarea correspondiente (id == task.id)
+    // Agrego id de tarea para poder trabajar conjuntamente el input check, li e icono de la baura con su tarea correspondiente (id == idTarea)
     li.setAttribute('id', idTarea);
     trashIcon.setAttribute('id', idTarea);
     input.setAttribute('id', idTarea)
@@ -109,21 +109,9 @@ function addTask(idTarea){
        
     });
 
+    // Se agrega evnto click al icono del cubo de basura
     trashIcon.addEventListener('click', removeTask);
 
-    // const checked = input.checked;
-    // console.log(checked);
-
-    input.setAttribute('type', 'checkbox'); 
-    // input.classList.add('task-checkbox');
-    // span.classList.add('task-text');
-    // trashIcon.setAttribute('class', 'fa fa-trash');
-    // console.log(span.value = (taskArray.at(-1)).name);
-    // span.textContent = span.value;
-    // li.appendChild(article).appendChild(input);
-    // li.appendChild(article).appendChild(span);
-    // li.appendChild(trashIcon);
-    // taskList.appendChild(li);
 }
 
 // AÑADIR TAREA
