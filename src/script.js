@@ -131,13 +131,29 @@ addButton.addEventListener('click', () => {
     if (fieldEmpty()) {
         alert('Por favor, pon nombre a la tarea');
     } else {
-        const tarea = makeTask(taskName.value);
-        taskArray.push(tarea);
-        addTask(tarea.id);
-        //addTaskNumber();
-        cleanNameOfTask();  
-        console.log('añadiendo')
         
+        const tarea = makeTask(taskName.value);
+
+        // Ejemplo de coerción !taskArray.length. Al poner  not(!) convierte lo que deberia ser un 0 en un booleano (false)
+
+        if (!taskArray.length) {
+                taskArray.push(tarea);
+                addTask(tarea.id);
+                cleanNameOfTask();  
+        } else {
+            console.log('taskName ' + taskName.value)
+            console.log('funcion duplicado ' +duplicatedTasdk(taskName.value))
+            if (duplicatedTasdk(taskName.value)) {
+                alert('Ya existe una tarea con esa descripción');
+                cleanNameOfTask();
+                console.log('existe')
+            } else {
+                console.log('deberia existe')
+                taskArray.push(tarea);
+                addTask(tarea.id);
+                cleanNameOfTask();  
+            }        
+        }
     }
 })
 
@@ -169,11 +185,20 @@ function removeAll() {
   }
 
 
-function duplicatedTasdk(newTask) {
+function duplicatedTasdk(nameNewTask) {
     
-    const nombre = newTask.name;
-    const id = newTask.id;
+    let founded;
+    let longitud = taskArray.length;
+    let i = 0;
+   
     do {
-        
-    } while (condition);
+        console.log('i '+ i)
+        if (nameNewTask == taskArray[i].name) {
+            founded = true;
+        }
+        i++;
+    } while (i < longitud);
+    
+
+    return founded;
 }
