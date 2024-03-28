@@ -3,7 +3,8 @@ let taskArray = [];
 
 // Variable para contabilizar el número de tareas
 let idTask = 0;
-//  Función constructora Obeto tarea
+
+//  Función constructora Objeto tarea
 function task(name){
     this.id = idTask++;
     this.name = name;
@@ -38,9 +39,7 @@ function fieldEmpty(){
    
     if (taskName.value == '') {
         input = true;
-        
     }
-   
     return input;
 }
 
