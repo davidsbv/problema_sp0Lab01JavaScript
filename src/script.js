@@ -32,11 +32,16 @@ cleanNameOfTask();
 
 // Comprobar que hay algo escrito en el campo del nombre de la tarea a ingresar
 function fieldEmpty(){
+
+    // Ejemplo de scope. El nombre de esta variable se ha usado en la función addTask()
+    let input = false ;
+   
     if (taskName.value == '') {
-        return true;
-    } else {
-        return false;
+        input = true;
+        
     }
+   
+    return input;
 }
 
 // Crear tarea
@@ -90,10 +95,8 @@ function addTask(idTarea){
     
   
     // Asignamos un eventListener a cada elemento input checkbox que se crea
-    input.addEventListener('click', (event) => {
+    input.addEventListener('click', () => {
       
-        // target es la referencia del objeto que recibe el click
-        const target = event.target;
       
         // Se comprueba si el checkbox está o no marcado y se establece el atributo task.done = true / false, según corresponda. También se modifican algunos estilos.
         if (input.checked) {
@@ -129,14 +132,13 @@ addButton.addEventListener('click', () => {
                 addTask(tarea.id);
                 cleanNameOfTask();  
         } else {
-            console.log('taskName ' + taskName.value)
-            console.log('funcion duplicado ' +duplicatedTasdk(taskName.value))
+           
             if (duplicatedTasdk(taskName.value)) {
                 alert('Ya existe una tarea con esa descripción');
                 cleanNameOfTask();
-                console.log('existe')
+                
             } else {
-                console.log('deberia existe')
+                
                 taskArray.push(tarea);
                 addTask(tarea.id);
                 cleanNameOfTask();  
@@ -164,29 +166,24 @@ function removeTask(event){
     
 }
 
-function removeAll() {
-    const taskList = document.getElementById("taskList");
-    while (taskList.hasChildNodes()) {
-      taskList.removeChild(taskList.firstChild);
-      refreshTaskLenght();
-    }
-  }
-
-
+// Función para comprobar que la tarea no esté ya añadida. Devuelve true / false
 function duplicatedTasdk(nameNewTask) {
     
-    let founded;
+    //Ejemplo de coerción. Cadena no vacía devuelve true*
+    const truth = 'cadena no vacia';
+    let founded = 0;
+
     let longitud = taskArray.length;
     let i = 0;
    
     do {
-        console.log('i '+ i)
+        
         if (nameNewTask == taskArray[i].name) {
-            founded = true;
+            //*
+            founded = Boolean(truth);
         }
         i++;
     } while (i < longitud);
     
-
     return founded;
 }
