@@ -42,7 +42,6 @@ function fieldEmpty(){
 // Crear tarea
 function makeTask(nameTask){
     const tarea = new task(nameTask);
-    console.log('id arrayTareas ' + tarea.id )
     return tarea;
 }
 
@@ -65,39 +64,38 @@ function addTask(idTarea){
     // Icono cubo basura
     const trashIcon = document.createElement('i');
 
-    // let index = taskArray.at(-1);
-    console.log('idTarea ' + idTarea)
+    // tarea guarda la tarea coincidente con el índice de tarea que pasa como argumento el la función
+    const tarea = taskArray.find((indice) => (indice.id == idTarea));
 
+    // Agrego id de tarea para poder trabajar conjuntamente el input check, li e icono de la baura con su tarea correspondiente (id == task.id)
     li.setAttribute('id', idTarea);
     trashIcon.setAttribute('id', idTarea);
-    // Agrego id de tarea para poder trabajar conjuntamente el input check con su tarea.done correspondiente
     input.setAttribute('id', idTarea)
+
+    // Añadir classes y atributos a los nuevos elementos que se crean
     input.setAttribute('type', 'checkbox'); 
     input.classList.add('task-checkbox');
     span.classList.add('task-text');
     trashIcon.setAttribute('class', 'fa fa-trash');
-   // span.value = taskArray[idTarea].name;
-   // tarea guarda la tarea coincidente con el índice de tarea que pasa como argumento el la función
-    const tarea = taskArray.find((indice) => (indice.id == idTarea));
+
+    // Poner nombre easignar el nombre de la tarea a el sapn para mostrarlo
     span.value = tarea.name;
-    console.log('span.value '+span.value)
     span.textContent = span.value;
+
+    // Agregar elementos html 
     li.appendChild(article).appendChild(input);
     li.appendChild(article).appendChild(span);
     li.appendChild(trashIcon);
     taskList.appendChild(li); 
     
-    taskArray.forEach(element =>{
-        console.log(element)
-    })
   
-    console.log('idTarea ' +idTarea);
+    // Asignamos un eventListener a cada elemento input checkbox que se crea
     input.addEventListener('click', (event) => {
+      
+        // target es la referencia del objeto que recibe el click
         const target = event.target;
-         console.log( target)
-        // console.log('target.id '+target.id)
-        // console.log('indice utlimo ' + idTarea)
-         console.log('taskArray ' + taskArray.values())
+      
+        // Se comprueba si el checkbox está o no marcado y se establece el atributo task.done = true / false, según corresponda. También se modifican algunos estilos.
         if (input.checked) {
             span.style.color = 'red'
             span.style.textDecoration = 'line-through';
@@ -145,28 +143,20 @@ addButton.addEventListener('click', () => {
 
 // Borrar tarea
 function removeTask(event){
-    //const idTrash = document.getElementsByClassName('fa fa-trash')
-    //const li = Array.from(document.querySelectorAll('li'))
-
-    // Elemnto que dispara el evento
-    const trashId = event.target.parentElement;
-    //const ul = document.querySelectorAll('li')
-    const taskList = document.getElementById('taskList')
-    console.log('trasId' + trashId.id)
-    if (taskList.hasChildNodes()) {
-        taskArray.splice(trashId.id)
-        //taskList.removeChild(taskList.children[trashId.id])
-        taskList.removeChild(trashId)
-        // refreshTaskLenght();
-        //addTask();
-    } 
-    
    
-    // taskList.removeChild(li.id = trashId);
-   // console.log(trashId)
-    //  console.log(trashId.id)
-    //  console.log(li)
-    
+    // trashId hace referencia al elemento que dispara el evento
+    const trashId = event.target.parentElement;
+   
+    // Recordatorio: taskList es la id de la etiqueta <ul>
+    const taskList = document.getElementById('taskList')
+
+    if (taskList.hasChildNodes()) {
+        // Borrar tarea del array de tareas
+        taskArray.splice(trashId.id)
+
+        // Borrar tarea de la pantalla
+        taskList.removeChild(trashId)
+    } 
     
 }
 
@@ -175,22 +165,15 @@ function removeAll() {
     while (taskList.hasChildNodes()) {
       taskList.removeChild(taskList.firstChild);
       refreshTaskLenght();
-    
     }
   }
 
-  function refreshTaskLenght() {
-    
-  }
 
-//   function duplicatedTasdk(newTask) {
+function duplicatedTasdk(newTask) {
     
-//     taskArray.forEach(element) =>{
-//         if () {
-            
-//         } else {
-            
-//         }
-//     }
-
-//   }
+    const nombre = newTask.name;
+    const id = newTask.id;
+    do {
+        
+    } while (condition);
+}
