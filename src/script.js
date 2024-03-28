@@ -1,9 +1,8 @@
-// Variable para contabilizar el número de tareas
-let idTask = 0;
-
 // Array para guardar las tareas
 let taskArray = [];
 
+// Variable para contabilizar el número de tareas
+let idTask = 0;
 //  Función constructora Obeto tarea
 function task(name){
     this.id = idTask++;
@@ -47,8 +46,7 @@ function makeTask(nameTask){
 }
 
 // Función para colocar las tareas en el documento
-function refreshTasks(){
-
+function addTask(idTarea){
 
     // Etiqueta li
     const li = document.createElement('li');
@@ -66,82 +64,129 @@ function refreshTasks(){
     // Icono cubo basura
     const trashIcon = document.createElement('i');
 
+    // tarea guarda la tarea coincidente con el índice de tarea que pasa como argumento el la función
+    const tarea = taskArray.find((indice) => (indice.id == idTarea));
 
-    for (let i = 0; i < taskArray.length; i++) {
+    // Agrego id de tarea para poder trabajar conjuntamente el input check, li e icono de la baura con su tarea correspondiente (id == idTarea)
+    li.setAttribute('id', idTarea);
+    trashIcon.setAttribute('id', idTarea);
+    input.setAttribute('id', idTarea)
+
+    // Añadir classes y atributos a los nuevos elementos que se crean
+    input.setAttribute('type', 'checkbox'); 
+    input.classList.add('task-checkbox');
+    span.classList.add('task-text');
+    trashIcon.setAttribute('class', 'fa fa-trash');
+
+    // Poner nombre easignar el nombre de la tarea a el sapn para mostrarlo
+    span.value = tarea.name;
+    span.textContent = span.value;
+
+    // Agregar elementos html 
+    li.appendChild(article).appendChild(input);
+    li.appendChild(article).appendChild(span);
+    li.appendChild(trashIcon);
+    taskList.appendChild(li); 
+    
+  
+    // Asignamos un eventListener a cada elemento input checkbox que se crea
+    input.addEventListener('click', (event) => {
+      
+        // target es la referencia del objeto que recibe el click
+        const target = event.target;
+      
+        // Se comprueba si el checkbox está o no marcado y se establece el atributo task.done = true / false, según corresponda. También se modifican algunos estilos.
+        if (input.checked) {
+            span.style.color = 'red'
+            span.style.textDecoration = 'line-through';
+            span.style.textDecorationColor = 'black'
+            tarea.done = true;
+        } else {
+            span.style.color = 'black'
+            span.style.textDecoration = 'none';
+            tarea.done = false;
+        }
        
-        li.setAttribute('id', i);
-        trashIcon.setAttribute('id', i);
-        input.setAttribute('id', i)
-        input.setAttribute('type', 'checkbox'); 
-        input.classList.add('task-checkbox');
-        span.classList.add('task-text');
-        trashIcon.setAttribute('class', 'fa fa-trash');
-        console.log(span.value = taskArray[i].name);
-        span.value = taskArray[i].name;
-        span.textContent = span.value;
-        li.appendChild(article).appendChild(input);
-        li.appendChild(article).appendChild(span);
-        li.appendChild(trashIcon);
-        taskList.appendChild(li); 
+    });
 
-        console.log(input)
-        
-        input.addEventListener('click', (event) => {
-            const target = event.target;
-            if (input.checked) {
-                span.style.color = 'red'
-                span.style.textDecoration = 'line-through';
-                taskArray[target.id].done = true;
-            } else {
-                span.style.color = 'black'
-                span.style.textDecoration = 'none';
-                taskArray[target.id].done = false;
-            }
-            console.log(taskArray[i])
-        });
+    // Se agrega evnto click al icono del cubo de basura
+    trashIcon.addEventListener('click', removeTask);
 
-        trashIcon.addEventListener('click', removeTask);
-
-        // const checked = input.checked;
-        // console.log(checked);
-
-    }
-
-    // input.setAttribute('type', 'checkbox'); 
-    // input.classList.add('task-checkbox');
-    // span.classList.add('task-text');
-    // trashIcon.setAttribute('class', 'fa fa-trash');
-    // console.log(span.value = (taskArray.at(-1)).name);
-    // span.textContent = span.value;
-    // li.appendChild(article).appendChild(input);
-    // li.appendChild(article).appendChild(span);
-    // li.appendChild(trashIcon);
-    // taskList.appendChild(li);
 }
 
-// Añadir tarea
+// AÑADIR TAREA
 addButton.addEventListener('click', () => {
     if (fieldEmpty()) {
         alert('Por favor, pon nombre a la tarea');
     } else {
-        taskArray.push(makeTask(taskName.value));
-        refreshTasks();
-        //refreshTasksNumber();
-        cleanNameOfTask();  
         
+        const tarea = makeTask(taskName.value);
+
+        // Ejemplo de coerción !taskArray.length. Al poner  not(!) convierte lo que deberia ser un 0 en un booleano (false)
+
+        if (!taskArray.length) {
+                taskArray.push(tarea);
+                addTask(tarea.id);
+                cleanNameOfTask();  
+        } else {
+            console.log('taskName ' + taskName.value)
+            console.log('funcion duplicado ' +duplicatedTasdk(taskName.value))
+            if (duplicatedTasdk(taskName.value)) {
+                alert('Ya existe una tarea con esa descripción');
+                cleanNameOfTask();
+                console.log('existe')
+            } else {
+                console.log('deberia existe')
+                taskArray.push(tarea);
+                addTask(tarea.id);
+                cleanNameOfTask();  
+            }        
+        }
     }
 })
 
 // Borrar tarea
 function removeTask(event){
-    //const idTrash = document.getElementsByClassName('fa fa-trash')
-    const trashId = event.target;
-    const li = Array.from(document.querySelectorAll('li'))
+   
+    // trashId hace referencia al elemento que dispara el evento
+    const trashId = event.target.parentElement;
+   
+    // Recordatorio: taskList es la id de la etiqueta <ul>
+    const taskList = document.getElementById('taskList')
+
+    if (taskList.hasChildNodes()) {
+        // Borrar tarea del array de tareas
+        taskArray.splice(trashId.id)
+
+        // Borrar tarea de la pantalla
+        taskList.removeChild(trashId)
+    } 
     
-    //taskList.removeChild(trashId);
-    //refreshTasks();
-     console.log(trashId)
-     console.log(li)
+}
+
+function removeAll() {
+    const taskList = document.getElementById("taskList");
+    while (taskList.hasChildNodes()) {
+      taskList.removeChild(taskList.firstChild);
+      refreshTaskLenght();
+    }
+  }
+
+
+function duplicatedTasdk(nameNewTask) {
     
+    let founded;
+    let longitud = taskArray.length;
+    let i = 0;
+   
+    do {
+        console.log('i '+ i)
+        if (nameNewTask == taskArray[i].name) {
+            founded = true;
+        }
+        i++;
+    } while (i < longitud);
     
+
+    return founded;
 }
