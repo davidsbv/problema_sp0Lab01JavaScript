@@ -42,7 +42,7 @@ function fieldEmpty(){
 // Crear tarea
 function makeTask(nameTask){
     const tarea = new task(nameTask);
-    console.log('id arrayTareas' + tarea.id )
+    console.log('id arrayTareas ' + tarea.id )
     return tarea;
 }
 
@@ -65,44 +65,50 @@ function addTask(idTarea){
     // Icono cubo basura
     const trashIcon = document.createElement('i');
 
-    let index = taskArray.at(-1);
+    // let index = taskArray.at(-1);
+    console.log('idTarea ' + idTarea)
 
-
-    // li.setAttribute('id', index.id);
-    // trashIcon.setAttribute('id', index.id);
+    li.setAttribute('id', idTarea);
+    trashIcon.setAttribute('id', idTarea);
     // Agrego id de tarea para poder trabajar conjuntamente el input check con su tarea.done correspondiente
     input.setAttribute('id', idTarea)
     input.setAttribute('type', 'checkbox'); 
     input.classList.add('task-checkbox');
     span.classList.add('task-text');
     trashIcon.setAttribute('class', 'fa fa-trash');
-    span.value = index.name;
+   // span.value = taskArray[idTarea].name;
+   // tarea guarda la tarea coincidente con el índice de tarea que pasa como argumento el la función
+    const tarea = taskArray.find((indice) => (indice.id == idTarea));
+    span.value = tarea.name;
     console.log('span.value '+span.value)
     span.textContent = span.value;
     li.appendChild(article).appendChild(input);
     li.appendChild(article).appendChild(span);
     li.appendChild(trashIcon);
     taskList.appendChild(li); 
-
+    
+    taskArray.forEach(element =>{
+        console.log(element)
+    })
   
     console.log('idTarea ' +idTarea);
     input.addEventListener('click', (event) => {
         const target = event.target;
-        
+         console.log( target)
+        // console.log('target.id '+target.id)
+        // console.log('indice utlimo ' + idTarea)
+         console.log('taskArray ' + taskArray.values())
         if (input.checked) {
             span.style.color = 'red'
             span.style.textDecoration = 'line-through';
             span.style.textDecorationColor = 'black'
-            taskArray[target.id].done = true;
+            tarea.done = true;
         } else {
             span.style.color = 'black'
             span.style.textDecoration = 'none';
-            taskArray[target.id].done = false;
+            tarea.done = false;
         }
-        console.log( target)
-        console.log('target.id '+target.id)
-        console.log('indice utlimo ' + index.id)
-        console.log('taskArray ' + taskArray[index.id].id)
+       
     });
 
     trashIcon.addEventListener('click', removeTask);
@@ -122,12 +128,12 @@ function addTask(idTarea){
     // taskList.appendChild(li);
 }
 
-// Añadir tarea
+// AÑADIR TAREA
 addButton.addEventListener('click', () => {
     if (fieldEmpty()) {
         alert('Por favor, pon nombre a la tarea');
     } else {
-        let tarea = makeTask(taskName.value);
+        const tarea = makeTask(taskName.value);
         taskArray.push(tarea);
         addTask(tarea.id);
         //addTaskNumber();
@@ -151,16 +157,14 @@ function removeTask(event){
         taskArray.splice(trashId.id)
         //taskList.removeChild(taskList.children[trashId.id])
         taskList.removeChild(trashId)
-        refreshTaskLenght();
+        // refreshTaskLenght();
         //addTask();
     } 
     
    
     // taskList.removeChild(li.id = trashId);
-    
-   
    // console.log(trashId)
-     console.log(trashId.id)
+    //  console.log(trashId.id)
     //  console.log(li)
     
     
@@ -176,7 +180,7 @@ function removeAll() {
   }
 
   function refreshTaskLenght() {
-    idTask = (taskArray.length);
+    
   }
 
 //   function duplicatedTasdk(newTask) {
